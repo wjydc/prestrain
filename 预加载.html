@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>预加载</title>
+	<style type="text/css">
+		#box{
+			width:100%;
+			text-align: center;
+			font-size:50px;
+			color:red;
+		}
+
+
+	</style>
+</head>
+<body>
+	<div id="box"></div>
+</body>
+	<script type="text/javascript">
+	var box=document.getElementById('box');
+		// 步骤：1 存一组图片到数组中
+		 //     2  因为需要先将图片一张张加载，所以需要利用for循环。
+		 //     3  图片加载前，需要先新建一个图片对象，和图片路径
+		//      4  每次新建一张图片对象，获取一个图片路径，进行加载（在此，利用index++实现每次加载下一张)
+		//      5  加载后，将图片存到一盒新的空数组中。
+		//      6  将数组添加到HTML文档的元素中
+
+		var imgarr=["http://d.hiphotos.baidu.com/image/h%3D200/sign=2a5a59df74094b36c4921ced93cd7c00/18d8bc3eb13533fa997c342eaad3fd1f40345be3.jpg","http://g.hiphotos.baidu.com/image/pic/item/5882b2b7d0a20cf4c7e9bd9973094b36acaf997f.jpg","http://e.hiphotos.baidu.com/image/h%3D200/sign=c6fd3ae21d178a82d13c78a0c602737f/4e4a20a4462309f7d4896d3c710e0cf3d7cad63e.jpg","http://g.hiphotos.baidu.com/image/pic/item/0eb30f2442a7d9338e2370bcaf4bd11372f00171.jpg","http://f.hiphotos.baidu.com/image/pic/item/f11f3a292df5e0fe8429ca47596034a85edf7246.jpg","http://g.hiphotos.baidu.com/image/pic/item/08f790529822720e62e61b4e7ecb0a46f21fab5e.jpg","http://g.hiphotos.baidu.com/zhidao/pic/item/267f9e2f07082838e161fffabd99a9014d08f1f4.jpg"];
+
+
+		var index=0;
+		var arr=[];
+		for (var i = 0; i < imgarr.length; i++) {
+			var newobj=new Image();
+			newobj.src=imgarr[i];
+			newobj.onload=function(){
+				index++;
+				arr.push(this);  // this指代的是事件的主体，也就是newobj,  而事件的主体我们一般可以用this来指代
+
+				// 当index++ 大于我们的imgarr.length时候，也就是加载完成的时候，加载条应该显示100%；
+				box.innerHTML=Math.ceil(index/imgarr.length*100)+"%";
+				if (index>=imgarr.length) {
+					
+					loadingover();
+
+				}
+
+			}
+		}
+
+
+		function loadingover(){
+				box.innerHTML="";
+		
+				for (var i = 0; i < arr.length; i++){
+					box.appendChild(arr[i]);
+			}
+		}
+	</script>
+</html>
